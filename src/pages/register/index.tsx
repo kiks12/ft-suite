@@ -1,10 +1,13 @@
 
-import RegisterAvatar from "@/components/register/avatar";
-import { RegisterContext } from "@/hooks/RegisterContext";
 import { getAccountFromAPI } from "../../../firebase/firebase";
 import { useRouter } from "next/router";
-
 import { useContext, useState } from "react";
+
+import { RegisterContext } from "@/hooks/RegisterContext";
+import { UserContext } from "@/hooks/UserContext";
+
+import RegisterAvatar from "@/components/register/avatar";
+
 
 const INPUT_CLASSNAMES = "border border-black-200 rounded-md p-2 w-full mt-2";
 const INPUT_DIV_CLASSNAMES = "my-3 w-full";
@@ -14,6 +17,8 @@ export default function Register() {
   
   const router = useRouter();
   const { registerUser } = useContext(RegisterContext);
+  const { setUser } = useContext(UserContext);
+
   const [username, setUsername] = useState<string>(registerUser?.displayName ?? "");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -35,6 +40,7 @@ export default function Register() {
     if (resOne.status === 200) {
       const { res, status } = await getAccountFromAPI(registerUser?.email ?? "");
       if (res.user && status === 200) {
+        setUser(res.user);
         router.push('/');
       }
     }

@@ -29,6 +29,6 @@ export const signInWithGoogleHandler = async () => {
 }
 
 export const getAccountFromAPI = async (email: string | null) => {
-  const res = await fetch(`/api/user/get?email=${email ?? ""}`);
+  const res = await fetch(`/api/auth/login?email=${email ?? ""}`);
   return {res: await res.json(), status: res.status}
 }
